@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: project-api
+  jpa:
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+server:
+  port: 9000
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
