@@ -2,12 +2,10 @@ package com.javaproject.transaction.controller;
 
 import com.javaproject.transaction.api.DTO.TransactionDTO;
 import com.javaproject.transaction.api.service.TransactionServiceProxy;
-import org.springframework.http.HttpStatus;
+import feign.FeignException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/apis")
@@ -22,8 +20,8 @@ public class ApiController {
     public ResponseEntity<?> doTransaction(@RequestBody TransactionDTO transactionDTO) {
         try {
             transactionServiceProxy.doTransactions(transactionDTO);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (FeignException e) {
+            return ResponseEntity.ok().body(e.contentUTF8());
         }
         return ResponseEntity.ok().build();
     }

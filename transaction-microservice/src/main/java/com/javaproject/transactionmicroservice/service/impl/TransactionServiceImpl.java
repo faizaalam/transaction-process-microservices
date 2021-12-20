@@ -32,11 +32,14 @@ public class TransactionServiceImpl implements TransactionService {
                 .setRequestId(transactionRequest.getRequestId())
                 .setRequester(transactionRequest.getRequester())
                 .setNote(transactionRequest.getNote())
-                .setTransactionType(TransactionType.valueOf(decodeBase64(transactionRequest.getTransactionType())))
-                .setAmount(Double.valueOf(decodeBase64(transactionRequest.getAmount())))
-                .setDestinationAccountNumber(decodeBase64(transactionRequest.getDestinationAccountNumber()))
-                .setSourceAccountNumber(decodeBase64(transactionRequest.getSourceAccountNumber()));
+                .setTransactionType(TransactionType.valueOf(transactionRequest.getTransactionType()))
+                .setAmount(Double.valueOf(transactionRequest.getAmount()))
+                .setDestinationAccountNumber(transactionRequest.getDestinationAccountNumber())
+                .setSourceAccountNumber(transactionRequest.getSourceAccountNumber());
 
+        if (!isRequestValid(transactionRequest)) {
+            throw new RuntimeException("Transaction request is not valid");
+        }
         transactionRequestEntity = transactionRequestRepository.save(transactionRequestEntity);
 
         accountService.updateSourceAccountBalances(transactionRequestEntity.getSourceAccountNumber(), transactionRequestEntity.getAmount(), transactionRequestEntity.getTransactionType());
@@ -68,5 +71,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     private String decodeBase64(String encodedValue) {
         return new String( Base64.getDecoder().decode(encodedValue.getBytes()));
+    }
+
+    @Override
+    public TransactionRequest decodeTransactionRequest(TransactionRequest transactionRequest) {
+        return new TransactionRequest()
+                .setRequestId(transactionRequest.getRequestId())
+                .setRequester(transactionRequest.getRequester())
+                .setNote(transactionRequest.getNote())
+                .setTransactionType(decodeBase64(transactionRequest.getTransactionType()))
+                .setAmount(decodeBase64(transactionRequest.getAmount()))
+                .setDestinationAccountNumber(decodeBase64(transactionRequest.getDestinationAccountNumber()))
+                .setSourceAccountNumber(decodeBase64(transactionRequest.getSourceAccountNumber()));
+
     }
 }

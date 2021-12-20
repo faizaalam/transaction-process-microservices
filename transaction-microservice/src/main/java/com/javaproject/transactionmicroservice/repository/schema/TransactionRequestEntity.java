@@ -1,9 +1,11 @@
 package com.javaproject.transactionmicroservice.repository.schema;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "TRANSACTION_LOGS")
+@Table(name = "TRANSACTION")
 public class TransactionRequestEntity {
     @Id
     private String requestId;
@@ -14,6 +16,7 @@ public class TransactionRequestEntity {
     private Double amount;
     private String destinationAccountNumber;
     private String note;
+    private LocalDateTime transactionTime;
 
     // audit
 
@@ -77,6 +80,15 @@ public class TransactionRequestEntity {
 
     public TransactionRequestEntity setNote(String note) {
         this.note = note;
+        return this;
+    }
+
+    public LocalDateTime getTransactionTime() {
+        return transactionTime;
+    }
+
+    public TransactionRequestEntity setTransactionTime(LocalDateTime transactionTime) {
+        this.transactionTime = transactionTime;
         return this;
     }
 }

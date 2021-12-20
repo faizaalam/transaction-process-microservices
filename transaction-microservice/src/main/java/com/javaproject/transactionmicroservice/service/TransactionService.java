@@ -7,4 +7,6 @@ public interface TransactionService {
     void doTransaction(TransactionRequest transactionRequest);
 
     boolean isRequestValid(TransactionRequest transactionRequest);
+
+    TransactionRequest decodeTransactionRequest(TransactionRequest transactionRequest);
 }

@@ -23,11 +23,8 @@ public class TransactionController {
 
     @PostMapping(consumes= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> doTransaction(@RequestBody TransactionRequest transactionRequest) {
-        if (!transactionService.isRequestValid(transactionRequest)) {
-            throw new RuntimeException("Transaction request is not valid");
-        }
-
        try {
+           transactionRequest = transactionService.decodeTransactionRequest(transactionRequest);
            transactionService.doTransaction(transactionRequest);
        }catch (Exception e) {
            throw new RuntimeException("Transaction could not be performed");
