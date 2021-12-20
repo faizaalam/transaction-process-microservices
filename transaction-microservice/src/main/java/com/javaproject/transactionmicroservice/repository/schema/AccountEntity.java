@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ACCOUNTS")
+@Table(name = "ACCOUNT")
 public class AccountEntity {
     @Id
     @GeneratedValue

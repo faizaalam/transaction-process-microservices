@@ -7,19 +7,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
 
 public class TransactionRequest implements Serializable {
-    @NotNull
+    @NotBlank(message = "Request ID cannot be null/empty")
     private String requestId;
-    @NotNull private String requester;
-    @NotNull private String transactionType;
-    @NotNull private String sourceAccountNumber;
-    @NotNull private String amount;
-    @NotNull  private String destinationAccountNumber;
-    @NotNull private String note;
+    @NotBlank(message = "Requester name cannot be null/empty")
+    private String requester;
+    @NotBlank(message = "Transaction type cannot be null/empty")
+    private String transactionType;
+    @NotBlank(message = "Source account number cannot be null/empty")
+    private String sourceAccountNumber;
+    @Positive(message = "Transaction amount not found") private String amount;
+    @NotBlank(message = "Destination account number cannot be null/empty")
+    private String destinationAccountNumber;
+    @NotBlank(message = "Not is mandatory")
+    private String note;
 
     public String getRequestId() {
         return requestId;

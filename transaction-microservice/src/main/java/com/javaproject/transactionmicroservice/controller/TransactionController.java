@@ -1,7 +1,7 @@
 package com.javaproject.transactionmicroservice.controller;
 
 import com.javaproject.transactionmicroservice.api.DTO.TransactionRequest;
-import com.javaproject.transactionmicroservice.service.TransactionServiceImpl;
+import com.javaproject.transactionmicroservice.service.TransactionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,15 +15,23 @@ import javax.validation.Valid;
 @RequestMapping(path = "/perform-transactions")
 public class TransactionController {
 
-    private final TransactionServiceImpl transactionService;
+    private final TransactionService transactionService;
 
-    public TransactionController(TransactionServiceImpl transactionService) {
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
 
     @PostMapping(consumes= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> doTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
-        transactionService.doTransaction(transactionRequest);
-        return ResponseEntity.ok("Application is running");
+    public ResponseEntity<?> doTransaction(@RequestBody TransactionRequest transactionRequest) {
+        if (!transactionService.isRequestValid(transactionRequest)) {
+            throw new RuntimeException("Transaction request is not valid");
+        }
+
+       try {
+           transactionService.doTransaction(transactionRequest);
+       }catch (Exception e) {
+           throw new RuntimeException("Transaction could not be performed");
+       }
+        return ResponseEntity.ok().build();
     }
 }
