@@ -9,7 +9,7 @@ For building and running the application you need:
 - Spring boot 2.5.6
 
 ## Run applications:
-1) First run the Eureka Server. Spring Eureka dashboard : http://localhost:8761/
+1) First run the Eureka Server. Spring Eureka dashboard: http://localhost:8761/
 
 ```shell
 cd eureka-config
